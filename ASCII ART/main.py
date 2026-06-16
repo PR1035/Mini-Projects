@@ -1,18 +1,24 @@
 from PIL import Image
-from colorama import Fore, style
+from colorama import Fore, Style
 
 img = Image.open("pineapple.jpg", mode="r")
 
 width, height = img.size
 
+
 #Getting 2D array of pixels
 rgb_array = []
-for y in range(height):
-    row = []
-    for x in range(width):
-        row.append(img.getpixel((x, y)))
-    rgb_array.append(row)
+
+def get_rgb_array():
+    img.thumbnail((height, 200))
+    for y in range(height):
+        row = []
+        for x in range(width):
+            row.append(img.getpixel((x, y)))
+        rgb_array.append(row)
+    return rgb_array
 # print(rgb_array)
+get_rgb_array()
 
 brightness_array = []
 for i in rgb_array:
@@ -40,5 +46,5 @@ for i in char_array:
     print(i*3)
 
 # img.show()
-print(img.size)
+# print(img.size)
 # print(brightness_array)
