@@ -10,13 +10,16 @@ width, height = img.size
 rgb_array = []
 
 def get_rgb_array():
-    img.thumbnail((height, 200))
+    """ img.thumbnail((height, 200))
     for y in range(height):
         row = []
         for x in range(width):
             row.append(img.getpixel((x, y)))
         rgb_array.append(row)
-    return rgb_array
+    return rgb_array """
+    img.thumbnail((height, 200))
+    pixels = list(img.getdata())
+    return [pixels[i:i+img.width] for i in range(0, len(pixels), img.width)]
 # print(rgb_array)
 get_rgb_array()
 
