@@ -23,7 +23,7 @@ def render(board):
             print(board[i][j], end=" ")
         print("\n") 
 
-render(random_state(width, height))
+# render(random_state(width, height))
 
 def next_board_state(board):
     for i in range(len(board)):
@@ -36,7 +36,54 @@ def next_board_state(board):
                 
                 ## 2 or 3 live neighbours
                 ##TODO
+                ct = 0
+                if (board[i-1][j] == 1): 
+                    ct = ct + 1
+                if (board[i-1][j-1] == 1): 
+                    ct = ct + 1
+                if (board[i][j-1] == 1): 
+                    ct = ct + 1
+                if (board[i+1][j-1] == 1): 
+                    ct = ct + 1
+                if (board[i+1][j] == 1): 
+                    ct = ct + 1
+                if (board[i+1][j+1] == 1): 
+                    ct = ct + 1
+                if (board[i][j+1] == 1): 
+                    ct = ct + 1
+                if (board[i-1][j+1] == 1): 
+                    ct = ct + 1
+                
+                if (ct >= 2 and ct <= 3):
+                    board[i][j] = 1
+                elif (ct > 3):
+                    board[i][j] = 0
+                
             else:
                 ##TODO
-                pass
+                ct = 0
+                if (board[i-1][j] == 1): 
+                    ct = ct + 1
+                if (board[i-1][j-1] == 1): 
+                    ct = ct + 1
+                if (board[i][j-1] == 1): 
+                    ct = ct + 1
+                if (board[i+1][j-1] == 1): 
+                    ct = ct + 1
+                if (board[i+1][j] == 1): 
+                    ct = ct + 1
+                if (board[i+1][j+1] == 1): 
+                    ct = ct + 1
+                if (board[i][j+1] == 1): 
+                    ct = ct + 1
+                if (board[i-1][j+1] == 1): 
+                    ct = ct + 1
+                
+
+                if (ct == 3):
+                    board[i][j] = 1
+    return board
+
+board1 = next_board_state(random_state(width, height))
+render(board1)
             
