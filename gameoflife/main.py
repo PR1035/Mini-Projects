@@ -1,89 +1,61 @@
 import random
+import time
+import os
+
+ALIVE = '.'
+DEAD = ' '
 
 def random_state(width, height):
     board = []
     for y in range(height):
         row = []
         for x in range(width):
-            var = random.random()
-            if (var < 0.5):
-                row.append(0)
-            else:
-                row.append(1)
+            row.append(ALIVE if random.random() < 0.5 else DEAD)
         board.append(row)
     return board
 
 
-width = 8
-height = 8
-
 def render(board):
-    for i in range(len(board)):
-        for j in range(len(board[i])):
-            print(board[i][j], end=" ")
-        print("\n") 
+    os.system('cls' if os.name == 'nt' else 'clear')  
+    for row in board:
+        print(''.join(row))  
 
-# render(random_state(width, height))
 
 def next_board_state(board):
-    for i in range(len(board)):
-        for j in range(len(board[i])):
-            if (board[i][j] == 1):
-                ## Only 0 or 1 live neighbours
-                if (board[i-1][j] == 0 or board[i-1][j-1] == 0 or board[i][j-1] == 0 or board[i+1][j-1] == 0
-                    or board[i+1][j] == 0 or board[i+1][j+1] == 0 or board[i][j+1] == 0 or board[i-1][j+1] == 0):
-                    board[i][j] == 0
-                
-                ## 2 or 3 live neighbours
-                ##TODO
-                ct = 0
-                if (board[i-1][j] == 1): 
-                    ct = ct + 1
-                if (board[i-1][j-1] == 1): 
-                    ct = ct + 1
-                if (board[i][j-1] == 1): 
-                    ct = ct + 1
-                if (board[i+1][j-1] == 1): 
-                    ct = ct + 1
-                if (board[i+1][j] == 1): 
-                    ct = ct + 1
-                if (board[i+1][j+1] == 1): 
-                    ct = ct + 1
-                if (board[i][j+1] == 1): 
-                    ct = ct + 1
-                if (board[i-1][j+1] == 1): 
-                    ct = ct + 1
-                
-                if (ct >= 2 and ct <= 3):
-                    board[i][j] = 1
-                elif (ct > 3):
-                    board[i][j] = 0
-                
+    rows = len(board)
+    cols = len(board[0])
+
+    def ct_live_neighbours(r, c):
+        ct = 0
+        for dr in [-1, 0, 1]:
+            for dc in [-1, 0, 1]:
+                if dr == 0 and dc == 0:
+                    continue
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < rows and 0 <= nc < cols:
+                    ct += 1 if board[nr][nc] == ALIVE else 0
+        return ct
+
+    new_board = [[DEAD] * cols for _ in range(rows)]
+
+    for i in range(rows):
+        for j in range(cols):
+            neighbours = ct_live_neighbours(i, j)
+            if board[i][j] == ALIVE:
+                new_board[i][j] = ALIVE if neighbours in (2, 3) else DEAD
             else:
-                ##TODO
-                ct = 0
-                if (board[i-1][j] == 1): 
-                    ct = ct + 1
-                if (board[i-1][j-1] == 1): 
-                    ct = ct + 1
-                if (board[i][j-1] == 1): 
-                    ct = ct + 1
-                if (board[i+1][j-1] == 1): 
-                    ct = ct + 1
-                if (board[i+1][j] == 1): 
-                    ct = ct + 1
-                if (board[i+1][j+1] == 1): 
-                    ct = ct + 1
-                if (board[i][j+1] == 1): 
-                    ct = ct + 1
-                if (board[i-1][j+1] == 1): 
-                    ct = ct + 1
-                
+                new_board[i][j] = ALIVE if neighbours == 3 else DEAD
 
-                if (ct == 3):
-                    board[i][j] = 1
-    return board
+    return new_board
 
-board1 = next_board_state(random_state(width, height))
-render(board1)
-            
+
+def run_forever(init_state):
+    next_state = init_state
+    while True:
+        render(next_state)
+        next_state = next_board_state(next_state)
+        time.sleep(0.1)  
+
+
+init_state = random_state(70, 30)
+run_forever(init_state)
