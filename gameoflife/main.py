@@ -14,7 +14,7 @@ def load_board(filename, width, height):
     for i, line in enumerate(lines):
         if i >= height:
             break
-        line = line.rstrip('\n')  # remove newline but keep spaces
+        line = line.rstrip('\n')  
         for j, char in enumerate(line):
             if j >= width:
                 break
