@@ -2,8 +2,26 @@ import random
 import time
 import os
 
-ALIVE = '.'
+ALIVE = '#'
 DEAD = ' '
+
+def load_board(filename, width, height):
+    board = [[DEAD] * width for _ in range(height)]
+    
+    with open(filename, 'r') as f:
+        lines = f.readlines()
+    
+    for i, line in enumerate(lines):
+        if i >= height:
+            break
+        line = line.rstrip('\n')  # remove newline but keep spaces
+        for j, char in enumerate(line):
+            if j >= width:
+                break
+            board[i][j] = ALIVE if char == '#' else DEAD
+    
+    return board
+
 
 def random_state(width, height):
     board = []
@@ -57,5 +75,5 @@ def run_forever(init_state):
         time.sleep(0.1)  
 
 
-init_state = random_state(70, 30)
+init_state = load_board('gun.txt', 25, 38)
 run_forever(init_state)

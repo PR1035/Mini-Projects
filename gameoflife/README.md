@@ -13,3 +13,5 @@ Problems faced:
     S:  used os.clear (USED AI FOR THIS :(  )
 
 As of 19/6/26, doesn't make very good looking arts. Will have to add text file paths for that and load the board
+
+21.6.26 -> Added a gun txt file
